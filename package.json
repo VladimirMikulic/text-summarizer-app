@@ -1,0 +1,19 @@
+{
+  "name": "text-summarizer-app",
+  "version": "1.0.0",
+  "description": "Web App for summarizing text.",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js"
+  },
+  "author": "Vladimir Mikulic <vladimir.mikulic2@gmail.com>",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-sanitizer": "^1.0.5",
+    "helmet": "^3.21.3",
+    "node-summarizer": "^1.0.7",
+    "sentence-extractor": "^1.0.7"
+  }
+}
