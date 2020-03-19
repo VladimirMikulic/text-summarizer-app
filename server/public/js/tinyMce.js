@@ -10,7 +10,7 @@ tinyMCE.init({
     });
   },
 
-  /* translations */
+  /* Language Tool Suggestions for different languages */
   languagetool_i18n_no_errors: {
     // "No errors were found.":
     'de-DE': 'Keine Fehler gefunden.'
@@ -46,7 +46,7 @@ tinyMCE.init({
     'tiny_mce/plugins/atd-tinymce/css/content.css',
   /* this stuff is a matter of preference: */
   theme: 'advanced',
-  // Override Language Tool CSS
+  // Override Language Tool CSS Theme Defaults
   content_css: '/css/styles.css',
   theme_advanced_buttons1: '',
   theme_advanced_buttons2: '',
