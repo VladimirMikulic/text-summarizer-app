@@ -23,41 +23,33 @@
 <body>
 
   <main class="section hero">
-    <!-- Language Tool Form -->
-    <form name="checkform" class="container" action="http://community.languagetool.org" method="post">
-      <p class="label">Check your text for grammatical errors</p>
-
-      <p id="checktextpara" class="textarea">
-        <textarea id="checktext" name="text" style="width: 100%"
-          rows="6">Paste your own text here... or check check this text.</textarea>
-      </p>
-
-      <!-- Languages Dropdown -->
-      <div class="select">
-        <select name="lang" id="lang">
-          <option value="en-US">English</option>
-          <option value="de-DE">German</option>
-        </select>
-      </div>
-
-      <input type="submit" name="_action_checkText" class="button is-info" value="Check Text"
-        onClick="doit();return false;">
-      <div id="feedbackErrorMessage" style="color: red;"></div>
-    </form>
 
     <!-- Text Summarization Form -->
-    <form class="container" action="/" method="POST">
+    <form name="checkform" class="container">
       <!-- Input -->
       <div class="field">
-        <label for="" class="label">Input</label>
-        <textarea class="textarea is-primary" spellcheck="false" placeholder="Enter some text or URL"
-          name="text"></textarea>
+        <label for="text" class="label">Input</label>
+        <!-- Required by Language Tool -->
+        <p id="checktextpara" class="textarea">
+          <textarea id="checktext" class="textarea" spellcheck="false" name="text">Enter some text or URL</textarea>
+        </p>
       </div>
+
+      <!-- Language Dropdown -->
+      <fieldset id="language-dropdown">
+        <label for="lang" class="label">Language</label>
+        <div class="select">
+          <select name="lang" id="lang">
+            <option value="en-US">English</option>
+            <option value="de-DE">German</option>
+          </select>
+        </div>
+      </fieldset>
 
       <!-- Summarization Ratio -->
       <div class="field">
-        <label for="" class="label">Summarization Ratio</label>
-        <fieldset id="summary-ratios" class="control">
+        <label for="summary-ratios" class="label">Summarization Ratio</label>
+        <fieldset id="summary-ratios" name="summary-ratios" class="control">
           <% summaryRatios.forEach((ratio, index)=> { %>
           <label class="radio">
             <!-- Make the 4th radio button checked by default (indexes start from 0!) -->
@@ -67,9 +59,15 @@
         </fieldset>
       </div>
 
-      <button type="submit" class="button is-info">Submit</button>
+      <!-- Submit the form to our endpoint -->
+      <button type="submit" class="button is-info" formaction="/" formmethod="POST">Submit</button>
+
+      <!-- Submit the form to Language Tool API -->
+      <input type="submit" formaction="http://community.languagetool.org" formmethod="POST" name="_action_checkText"
+        class="button is-outlined" value="Check Text" onClick="doit();return false;">
     </form>
 
+    <!-- Output -->
     <% if(output) { %>
     <div id="output" class="container">
       <h4 class="label">Output</h4>
