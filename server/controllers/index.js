@@ -1,4 +1,6 @@
 // Modules
+const axios = require('axios').default;
+const stripHtml = require('string-strip-html');
 const extract = require('sentence-extractor').extract;
 const SummarizerManager = require('node-summarizer').SummarizerManager;
 
@@ -30,11 +32,38 @@ function generateOutput(textToSummarize, numOfSentences) {
  */
 function getNumOfSenctences(text, ratio) {
   const totalNumOfSentences = extract(text).length;
-  const numOfSentences = Math.floor(
+  const numOfSentences = Math.round(
     (Number(ratio) / 100) * totalNumOfSentences
   );
 
   return numOfSentences;
+}
+
+/**
+ * Check if URL is valid
+ * @param  {String} url URL to check
+ * @return {Boolean}
+ */
+function isValidURL(url) {
+  var urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+
+  return url.match(urlRegex);
+}
+
+/**
+ * Download data (text) from the URL
+ * @param  {String} url URL to fetch text from
+ * @return {String} text fetched from the URL
+ */
+async function getTextFromURL(url) {
+  if (!isValidURL(url)) return '';
+
+  try {
+    const text = await axios.get(url, { responseType: 'text' });
+    return text.data;
+  } catch (error) {
+    return '';
+  }
 }
 
 /**
@@ -51,10 +80,17 @@ exports.getIndex = (req, res) => {
  * @param {Object} req Data about request
  * @param {Object} res Methods to handle the request
  */
-exports.postIndex = (req, res) => {
-  const textToSummarize = req.body.text.trim();
+exports.postIndex = async (req, res) => {
+  let textToSummarize = stripHtml(req.body.text).trim();
   const summaryRatio = req.body['summary-ratio'].trim();
 
+  // If URL is entered
+  if (textToSummarize.startsWith('http')) {
+    const url = textToSummarize;
+    textToSummarize = await getTextFromURL(url);
+  }
+
+  // If the user has submitted the empty form
   if (!textToSummarize) return res.redirect('/');
 
   const numOfSentences = getNumOfSenctences(textToSummarize, summaryRatio);

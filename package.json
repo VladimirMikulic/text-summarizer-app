@@ -8,12 +8,14 @@
   },
   "author": "Vladimir Mikulic <vladimir.mikulic2@gmail.com>",
   "dependencies": {
+    "axios": "^0.19.2",
     "compression": "^1.7.4",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-sanitizer": "^1.0.5",
     "helmet": "^3.21.3",
     "node-summarizer": "^1.0.7",
-    "sentence-extractor": "^1.0.7"
+    "sentence-extractor": "^1.0.7",
+    "string-strip-html": "^4.3.17"
   }
 }
